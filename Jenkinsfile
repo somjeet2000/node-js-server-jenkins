@@ -25,7 +25,7 @@ pipeline {
         // Stage 3 - Build Docker Image
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $DOCKERHUB_REPO:$IMAGE_TAG -f .'
+                sh 'docker build -t $DOCKERHUB_REPO:$IMAGE_TAG .'
             }
         }
 
