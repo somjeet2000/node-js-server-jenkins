@@ -47,7 +47,7 @@ pipeline {
         }
 
         // Stage 5 - Deploy to EC2 Instance
-        stage('Deploy to Server') {
+        stage('Deploy to Server $REMOTE_HOST') {
             steps {
                 sshagent([SSH_KEY]) {
                     sh '''echo "Connecting with the server $REMOTE_HOST"
