@@ -56,10 +56,10 @@ echo "🎉 Server Connected..."
 echo "🚀 Pulling latest Docker image..."
 echo "Using image: $DOCKERHUB_REPO:$IMAGE_TAG"
 docker pull $DOCKERHUB_REPO:$IMAGE_TAG
-echo "Stopping and removing existing container (if exists)..."
+echo "🚧 Stopping and removing existing container (if exists)..."
 docker stop node-js-server-jenkins || true
 docker rm node-js-server-jenkins || true
-echo "Running new container..."
+echo "🏃‍♂️‍➡️ Running new container..."
 docker run -d --name node-js-server-jenkins -p 5000:5000 $DOCKERHUB_REPO:$IMAGE_TAG
 EOF'''
                 }
