@@ -5,6 +5,11 @@ pipeline {
         // Docker
         DOCKERHUB_REPO = 'somjeetsrimani/node-js-server-jenkins'
         IMAGE_TAG = 'v1'
+
+        // EC2 Instance Details
+        SSH_KEY = 'ssh-key-id-simple-node-server'
+        REMOTE_HOST = '52.66.251.252'
+        REMOTE_USER = 'ubuntu'
     }
 
     stages {
@@ -37,6 +42,26 @@ pipeline {
                     echo 'DockerHub Login Successful 🎉'
                     sh 'docker push $DOCKERHUB_REPO:$IMAGE_TAG'
                     echo 'Image succesfully pushed to DockerHub 🎊'
+                }
+            }
+        }
+
+        // Stage 5 - Deploy to EC2 Instance
+        stage('Deploy to Server') {
+            steps {
+                sshagent([SSH_KEY]) {
+                    sh '''echo "Connecting with the server $REMOTE_HOST"
+ssh -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST <<EOF
+echo "🎉 Server Connected..."
+echo "🚀 Pulling latest Docker image..."
+echo "Using image: $DOCKERHUB_REPO:$IMAGE_TAG"
+docker pull $DOCKERHUB_REPO:$IMAGE_TAG
+echo "Stopping and removing existing container (if exists)..."
+docker stop node-js-server-jenkins || true
+docker rm node-js-server-jenkins || true
+echo "Running new container..."
+docker run -d --name node-js-server-jenkins -p 5000:5000 $DOCKERHUB_REPO:$IMAGE_TAG
+EOF'''
                 }
             }
         }
