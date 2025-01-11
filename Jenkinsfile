@@ -48,7 +48,6 @@ pipeline {
                             """
                         }
                     }
-                    // withSonarQubeEnv('Sonar-Server') {}
                 } 
             }
         }
