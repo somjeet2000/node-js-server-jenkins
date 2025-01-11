@@ -38,13 +38,15 @@ pipeline {
                 script {
                     def scannerHome = tool 'SonarScanner';
                     withSonarQubeEnv() {
-                        sh '''
+                        sh """
                             ${scannerHome}/bin/sonar-scanner \
                             -Dsonar.projectKey=${SONAR_PROJECTKEY} \
                             -Dsonar.projectName=${SONAR_PROJECTKEY} \
                             -Dsonar.host.url=${SONAR_HOST} \
                             -Dsonar.login=${SONAR_TOKEN}
-                        '''
+                            -X
+                        """
+                            
                     }
                 } 
             }
