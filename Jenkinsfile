@@ -30,9 +30,24 @@ pipeline {
         // Stage 3 - Static Code Analysis
         stage('Static Code Analysis') {
             steps {
-                def scannerHome = tool 'SonarScanner';
-                withSonarQubeEnv(credentialsId: 'Sonar-Token') {
+                def scannerHome = tool name: 'SonarScanner', type: 'SonarQubeScanner'
+                withSonarQubeEnv('Sonar-Server') {
                     sh "${scannerHome}/bin/sonar-scanner"
+                }
+            }
+        }
+
+        // Stage 4 - SonarQube Quality Gate
+        stage('SonarQube Quality Gate') {
+            steps {
+                script {
+                    // Wait for the quality gate result from SonarQube
+                    def qualityGate = waitForQualityGate()
+                    if (qualityGate.status != 'OK') {
+                        error "SonarQube quality gate failed: ${qualityGate.status}"
+                    } else {
+                        echo "SonarQube quality gate passed! 🎉"
+                    }
                 }
             }
         }
