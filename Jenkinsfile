@@ -12,7 +12,6 @@ pipeline {
         REMOTE_USER = 'ubuntu'
 
         // Sonar Details
-        SONAR_TOKEN = 'Sonar-Token'
         SONAR_HOST = 'http://3.109.185.139:9000/'
         SONAR_PROJECTKEY = 'Node-Js-Server-Jenkins'
     }
@@ -37,13 +36,13 @@ pipeline {
             steps {
                 script {
                     def scannerHome = tool 'SonarScanner';
-                    withSonarQubeEnv() {
+                    withSonarQubeEnv('Sonar-Server') {
                         sh """
                             ${scannerHome}/bin/sonar-scanner \
                             -Dsonar.projectKey=${SONAR_PROJECTKEY} \
                             -Dsonar.projectName=${SONAR_PROJECTKEY} \
                             -Dsonar.host.url=${SONAR_HOST} \
-                            -Dsonar.login=${SONAR_TOKEN}
+                            -Dsonar.login='Sonar-Token'
                             -X
                         """
                             
