@@ -27,7 +27,17 @@ pipeline {
             }
         }
 
-        // Stage 3 - Run test cases
+        // Stage 3 - Static Code Analysis
+        stage('Static Code Analysis') {
+            steps {
+                def scannerHome = tool 'SonarScanner';
+                withSonarQubeEnv(credentialsId: 'Sonar-Token') {
+                    sh "${scannerHome}/bin/sonar-scanner"
+                }
+            }
+        }
+
+        // Stage 4 - Run test cases
         stage('Run Tests') {
             agent {
                docker {
@@ -49,14 +59,14 @@ pipeline {
             }
         }
 
-        // Stage 3 - Build Docker Image
+        // Stage 5 - Build Docker Image
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t $DOCKERHUB_REPO:$IMAGE_TAG .'
             }
         }
 
-        // Stage 4 - Push to Docker Hub
+        // Stage 6 - Push to Docker Hub
         stage('Push to Docker Hub') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CRED', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
@@ -68,7 +78,7 @@ pipeline {
             }
         }
 
-        // Stage 5 - Deploy to EC2 Instance
+        // Stage 7 - Deploy to EC2 Instance
         stage('Deploy to Server') {
             steps {
                 sshagent([SSH_KEY]) {
