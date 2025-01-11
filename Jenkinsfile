@@ -27,6 +27,22 @@ pipeline {
             }
         }
 
+        // Stage 3 - Run test cases
+        stage('Run Tests') {
+            steps {
+                script {
+                    try {
+                        sh 'npm install'
+                        sh 'npm test'
+                        echo "👍 All Test Cases Passed!"
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE'
+                        throw e
+                    }
+                }
+            }
+        }
+
         // Stage 3 - Build Docker Image
         stage('Build Docker Image') {
             steps {
@@ -47,7 +63,7 @@ pipeline {
         }
 
         // Stage 5 - Deploy to EC2 Instance
-        stage('Deploy to Server ${REMOTE_HOST}') {
+        stage("Deploy to Server ${REMOTE_HOST}") {
             steps {
                 sshagent([SSH_KEY]) {
                     sh '''echo "Connecting with the server $REMOTE_HOST"
