@@ -36,14 +36,14 @@ pipeline {
             steps {
                 script {
                     def scannerHome = tool 'SonarScanner';
-                    withCredentials([string(credentialsId: 'Sonar-Server', variable: 'SONAR_AUTH_TOKEN')]) {
-                        withSonarQubeEnv() {
+                    withCredentials([string(credentialsId: 'Sonar-Token', variable: 'SONAR_TOKEN')]) {
+                        withSonarQubeEnv('Sonar-Server') {
                             sh """
                                 ${scannerHome}/bin/sonar-scanner \
                                 -Dsonar.projectKey=${SONAR_PROJECTKEY} \
                                 -Dsonar.projectName=${SONAR_PROJECTKEY} \
                                 -Dsonar.host.url=${SONAR_HOST} \
-                                -Dsonar.login=${SONAR_AUTH_TOKEN}
+                                -Dsonar.login=${SONAR_TOKEN}
                                 -X
                             """
                         }
