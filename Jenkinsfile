@@ -37,14 +37,16 @@ pipeline {
                 script {
                     def scannerHome = tool 'SonarScanner';
                     withCredentials([string(credentialsId: 'Sonar-Server', variable: 'SONAR_AUTH_TOKEN')]) {
-                        sh """
-                            ${scannerHome}/bin/sonar-scanner \
-                            -Dsonar.projectKey=${SONAR_PROJECTKEY} \
-                            -Dsonar.projectName=${SONAR_PROJECTKEY} \
-                            -Dsonar.host.url=${SONAR_HOST} \
-                            -Dsonar.login=${SONAR_AUTH_TOKEN}
-                            -X
-                        """
+                        withSonarQubeEnv() {
+                            sh """
+                                ${scannerHome}/bin/sonar-scanner \
+                                -Dsonar.projectKey=${SONAR_PROJECTKEY} \
+                                -Dsonar.projectName=${SONAR_PROJECTKEY} \
+                                -Dsonar.host.url=${SONAR_HOST} \
+                                -Dsonar.login=${SONAR_AUTH_TOKEN}
+                                -X
+                            """
+                        }
                     }
                     // withSonarQubeEnv('Sonar-Server') {}
                 } 
