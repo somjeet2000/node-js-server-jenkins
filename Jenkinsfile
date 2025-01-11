@@ -29,13 +29,13 @@ pipeline {
 
         // Stage 3 - Run test cases
         stage('Run Tests') {
-            steps {
-                agent {
-                    docker {
-                        image 'node:20-alpine'
-                        args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
-                    }
+            agent {
+               docker {
+                    image 'node:20-alpine'
+                    args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
                 }
+            }
+            steps {
                 script {
                     try {
                         sh 'npm install'
