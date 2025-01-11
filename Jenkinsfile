@@ -30,6 +30,12 @@ pipeline {
         // Stage 3 - Run test cases
         stage('Run Tests') {
             steps {
+                agent {
+                    docker {
+                        image 'node:20-alpine'
+                        args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
+                    }
+                }
                 script {
                     try {
                         sh 'npm install'
@@ -63,7 +69,7 @@ pipeline {
         }
 
         // Stage 5 - Deploy to EC2 Instance
-        stage('Deploy to Server ${env.REMOTE_HOST}') {
+        stage('Deploy to Server') {
             steps {
                 sshagent([SSH_KEY]) {
                     sh '''echo "Connecting with the server $REMOTE_HOST"
