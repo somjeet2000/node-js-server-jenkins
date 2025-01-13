@@ -51,7 +51,7 @@ pipeline {
             }
         }
 
-        Stage 4 - SonarQube Quality Gate
+        // Stage 4 - SonarQube Quality Gate
         stage('SonarQube Quality Gate') {
             steps {
                 script {
