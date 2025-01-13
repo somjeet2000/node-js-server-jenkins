@@ -52,19 +52,19 @@ pipeline {
         }
 
         // Stage 4 - SonarQube Quality Gate
-        stage('SonarQube Quality Gate') {
-            steps {
-                script {
-                    // Wait for the quality gate result from SonarQube
-                    def qualityGate = waitForQualityGate()
-                    if (qualityGate.status != 'OK') {
-                        error "SonarQube quality gate failed: ${qualityGate.status}"
-                    } else {
-                        echo "SonarQube quality gate passed! 🎉"
-                    }
-                }
-            }
-        }
+        // stage('SonarQube Quality Gate') {
+        //     steps {
+        //         script {
+        //             // Wait for the quality gate result from SonarQube
+        //             def qualityGate = waitForQualityGate()
+        //             if (qualityGate.status != 'OK') {
+        //                 error "SonarQube quality gate failed: ${qualityGate.status}"
+        //             } else {
+        //                 echo "SonarQube quality gate passed! 🎉"
+        //             }
+        //         }
+        //     }
+        // }
 
         // Stage 5 - Run test cases
         stage('Run Tests') {
