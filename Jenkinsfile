@@ -8,12 +8,12 @@ pipeline {
 
         // EC2 Instance Details
         SSH_KEY = 'ssh-key-id-simple-node-server'
-        REMOTE_HOST = '52.66.251.252'
+        REMOTE_HOST = '13.203.159.90'
         REMOTE_USER = 'ubuntu'
 
         // Sonar Details
-        SONAR_HOST = 'http://3.109.185.139:9000/'
-        SONAR_PROJECTKEY = 'Node-Js-Server-Jenkins'
+        SONAR_HOST = 'http://65.2.152.176:9000/'
+        SONAR_PROJECTKEY = 'node-js-server-jenkins'
     }
 
     stages {
