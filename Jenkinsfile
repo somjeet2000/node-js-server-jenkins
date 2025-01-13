@@ -67,7 +67,7 @@ pipeline {
             }
         }
 
-        // Stage 4 - Run test cases
+        // Stage 5 - Run test cases
         stage('Run Tests') {
             agent {
                docker {
@@ -89,14 +89,14 @@ pipeline {
             }
         }
 
-        // Stage 5 - Build Docker Image
+        // Stage 6 - Build Docker Image
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t $DOCKERHUB_REPO:$IMAGE_TAG .'
             }
         }
 
-        // Stage 6 - Push to Docker Hub
+        // Stage 7 - Push to Docker Hub
         stage('Push to Docker Hub') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CRED', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
@@ -108,7 +108,7 @@ pipeline {
             }
         }
 
-        // Stage 7 - Deploy to EC2 Instance
+        // Stage 8 - Deploy to EC2 Instance
         stage('Deploy to Server') {
             steps {
                 sshagent([SSH_KEY]) {
